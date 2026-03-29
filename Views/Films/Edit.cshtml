@@ -1,0 +1,67 @@
+﻿@model FilmCatalogue.Models.Film
+@{
+    ViewData["Title"] = $"Edit: {Model.Title}";
+}
+
+<h2>Редактирай: @Model.Title</h2>
+
+@if (ViewBag.Debug != null)
+{
+    <div class="alert alert-danger">@ViewBag.Debug</div>
+}
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="GenreId" class="form-label">Genre</label>
+                <select asp-for="GenreId" class="form-select" required>
+                    <option value="">Choose genre...</option>
+                    @foreach (var genre in ViewBag.Genres as List<FilmCatalogue.Models.Genre>)
+                    {
+                        <option value="@genre.Id" selected="@(genre.Id == Model.GenreId ? "selected" : null)">@genre.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label asp-for="ReleaseDate" class="form-label"></label>
+                <input asp-for="ReleaseDate" type="date" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Studio" class="form-label"></label>
+                <input asp-for="Studio" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Score" class="form-label">Rating (0-100)</label>
+                <input asp-for="Score" type="number" min="0" max="100" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save changes" class="btn btn-success" />
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">View</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

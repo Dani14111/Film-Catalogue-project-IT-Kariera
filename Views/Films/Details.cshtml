@@ -1,0 +1,49 @@
+﻿@model FilmCatalogue.Models.Film
+@{
+    ViewData["Title"] = $"Details: {Model.Title}";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2>@Model.Title <small class="text-muted">(@Model.ReleaseDate.Year)</small></h2>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Genre:</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge fs-5 bg-primary">@Model.Genre.Name</span>
+                        </dd>
+
+                        <dt class="col-sm-3">Studios:</dt>
+                        <dd class="col-sm-9">@Model.Studio</dd>
+
+                        <dt class="col-sm-3">Date:</dt>
+                        <dd class="col-sm-9">@Model.ReleaseDate.ToString("dd.MM.yyyy")</dd>
+
+                        <dt class="col-sm-3">Rating:</dt>
+                        <dd class="col-sm-9">
+                            <div class="progress w-50" style="height: 30px;">
+                                <div class="progress-bar @(Model.Score >= 90 ? "bg-success" : Model.Score >= 70 ? "bg-warning" : "bg-secondary")"
+                                     style="width: @(Model.Score)%">
+                                    @Model.Score/100
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">← Back to the list</a>
+        </div>
+    </div>
+</div>
